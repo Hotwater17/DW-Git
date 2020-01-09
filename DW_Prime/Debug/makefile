@@ -20,9 +20,6 @@ RM := rm -rf
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)
-ifneq ($(strip $(S_UPPER_DEPS)),)
--include $(S_UPPER_DEPS)
-endif
 ifneq ($(strip $(C_DEPS)),)
 -include $(C_DEPS)
 endif
@@ -31,31 +28,51 @@ endif
 -include ../makefile.defs
 
 # Add inputs and outputs from these tool invocations to the build variables 
+EXECUTABLES += \
+DW_Prime.elf \
+
+SIZE_OUTPUT += \
+default.size.stdout \
+
+OBJDUMP_LIST += \
+DW_Prime.list \
+
+OBJCOPY_HEX += \
+DW_Prime.hex \
+
 
 # All Target
-all: DW_Prime.elf
+all: DW_Prime.elf secondary-outputs
 
 # Tool invocations
 DW_Prime.elf: $(OBJS) $(USER_OBJS) ../STM32F103RBTx_FLASH.ld
-	@echo 'Building target: $@'
-	@echo 'Invoking: MCU GCC Linker'
-	arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -specs=nosys.specs -specs=nano.specs -T"../STM32F103RBTx_FLASH.ld" -Wl,-Map=output.map -Wl,--gc-sections -lm -o "DW_Prime.elf" @"objects.list" $(USER_OBJS) $(LIBS)
+	arm-none-eabi-gcc -o "DW_Prime.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"../STM32F103RBTx_FLASH.ld" --specs=nosys.specs -Wl,-Map="DW_Prime.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
-	$(MAKE) --no-print-directory post-build
+
+default.size.stdout: $(EXECUTABLES)
+	arm-none-eabi-size  $(EXECUTABLES)
+	@echo 'Finished building: $@'
+	@echo ' '
+
+DW_Prime.list: $(EXECUTABLES)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "DW_Prime.list"
+	@echo 'Finished building: $@'
+	@echo ' '
+
+DW_Prime.hex: $(EXECUTABLES)
+	arm-none-eabi-objcopy  -O ihex $(EXECUTABLES) "DW_Prime.hex"
+	@echo 'Finished building: $@'
+	@echo ' '
 
 # Other Targets
 clean:
 	-$(RM) *
 	-@echo ' '
 
-post-build:
-	-@echo 'Generating hex and Printing size information:'
-	arm-none-eabi-objcopy -O ihex "DW_Prime.elf" "DW_Prime.hex"
-	arm-none-eabi-size "DW_Prime.elf"
-	-@echo ' '
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_HEX)
 
 .PHONY: all clean dependents
-.SECONDARY: post-build
+.SECONDARY:
 
 -include ../makefile.targets

@@ -235,7 +235,7 @@ int main(void)
   MX_RTC_Init();
   MX_TIM2_Init();
   MX_ADC1_Init();
-  MX_USB_DEVICE_Init();
+  //MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
   __HAL_RCC_GPIOC_CLK_ENABLE();
   HAL_GPIO_Init(LED_GPIO_Port, &ledDef);
@@ -260,6 +260,7 @@ int main(void)
 #endif
 
 #ifdef TAG
+  deviceID = 0xEE;
   UWB_Tag_Init();
   globalUWBData.timeout = POLL_RX_TO_RESP_TX_DLY_UUS;
   newTxDelay = TX_ANT_DLY;
@@ -464,7 +465,7 @@ int main(void)
 Start_Measuring_Time();
 
 #ifndef DELAY_CALIBRATION
-
+/*
 if(usbRxFlag == 1)
 {
 	  usbRxFlag = 0;
@@ -499,7 +500,7 @@ if(usbRxFlag == 1)
       }
 
 }
-
+*/
 
 
 if(UWB_Tag_Get_Distance(&globalUWBData, currentAnchor) == 2)
@@ -526,7 +527,8 @@ debugTimer = Stop_Measuring_Time();
 if(transmitEnable == 1)
 {
 
-	CDC_Transmit_FS(intBuf, sprintf(intBuf, "\r \n %ldE-9 \r \n", globalUWBData.uwbDistance64));
+	//CDC_Transmit_FS(intBuf, sprintf(intBuf, "\r \n %ldE-9 \r \n", globalUWBData.uwbDistance64));
+	HAL_UART_Transmit(&huart3, intBuf, sprintf(intBuf, "\r \n %ldE-9 \r \n", globalUWBData.uwbDistance64), 100U);
 	HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, !LED_ACTIVE_STATE);
 }
 else

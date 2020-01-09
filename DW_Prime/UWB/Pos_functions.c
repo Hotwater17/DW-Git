@@ -84,12 +84,16 @@ void UWB_Tag_Init()
 {
     reset_DW1000(); /* Target specific drive of RSTn line into DW1000 low for a period. */
     port_set_dw1000_slowrate();
+    char uartBuffer[20];
     if (dwt_initialise(DWT_LOADUCODE) == DWT_ERROR)
     {
+
+
 
         while (1)
         {
         	HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+        	HAL_UART_Transmit(&huart3, uartBuffer,sprintf(uartBuffer, "DW Readout Error \r \n"), 100U);
         	HAL_Delay(300);
         };
     }

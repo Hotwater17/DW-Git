@@ -78,6 +78,9 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+
+#define dwhspi hspi2
+
 #define LED_Pin GPIO_PIN_14
 #define LED_GPIO_Port GPIOC
 #define BUT_Pin GPIO_PIN_0
@@ -103,7 +106,7 @@ void Error_Handler(void);
 #define DW_RESET_GPIO_Port GPIOA
 #define DW_NSS_Pin GPIO_PIN_9
 #define DW_NSS_GPIO_Port GPIOA
-#define DW_WKUP_Pin GPIO_PIN_10
+#define DW_WKUP_Pin GPIO_PIN_11 //Note, this is also USBDM pin, deactivate USB to use this
 #define DW_WKUP_GPIO_Port GPIOA
 #define J_TMS_Pin GPIO_PIN_13
 #define J_TMS_GPIO_Port GPIOA
@@ -134,7 +137,7 @@ void Error_Handler(void);
 #define ANCHOR_NUMBER 1
 
 #define POS_FUNCTIONS
-#define TAG
+//#define TAG
 #define NUCLEO
 
 #ifndef TAG
@@ -143,8 +146,8 @@ void Error_Handler(void);
 
 #ifndef TAG
 
-#define USEIMU
-#define USETPH
+//#define USEIMU
+//#define USETPH
 #endif
 
 
@@ -219,7 +222,7 @@ void Error_Handler(void);
 #define IMU_SDA_Pin GPIO_PIN_7
 #define IMU_SDA_GPIO_Port GPIOB
 */
-#define dwhspi hspi2
+
 /* MG: UNUSED
 #define LCD_RW_Pin GPIO_PIN_10
 #define LCD_RW_GPIO_Port GPIOB
