@@ -1,0 +1,9 @@
+config.c:15:6:SystemClock_Config	96	static
+config.c:64:6:MX_ADC1_Init	32	static
+config.c:109:6:MX_I2C1_Init	8	static
+config.c:143:6:MX_RTC_Init	24	static
+config.c:200:6:MX_SPI2_Init	8	static
+config.c:238:6:MX_TIM2_Init	40	static
+config.c:283:6:MX_USART3_UART_Init	8	static
+config.c:316:6:MX_GPIO_Init	64	static
+config.c:382:6:Error_Handler	0	static

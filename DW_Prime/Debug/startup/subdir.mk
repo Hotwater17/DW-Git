@@ -12,11 +12,5 @@ OBJS += \
 
 # Each subdirectory must supply rules for building sources it contributes
 startup/%.o: ../startup/%.s
-	@echo 'Building file: $<'
-	@echo 'Invoking: MCU GCC Assembler'
-	@echo %cd%
-	arm-none-eabi-as -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -I"C:/Users/Hotwater/Documents/Eclipse/DW_Prime/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc" -I"C:/Users/Hotwater/Documents/Eclipse/DW_Prime/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -g -o "$@" "$<"
-	@echo 'Finished building: $<'
-	@echo ' '
-
+	arm-none-eabi-gcc -mcpu=cortex-m3 -g3 -c -I"C:/Users/mgorywoda/Documents/GitHub/DW-Git/DW_Prime/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc" -I"C:/Users/mgorywoda/Documents/GitHub/DW-Git/DW_Prime/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -x assembler-with-cpp --specs=nano.specs -mfloat-abi=soft -mthumb -o "$@" "$<"
 
